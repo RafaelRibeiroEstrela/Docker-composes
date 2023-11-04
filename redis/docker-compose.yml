@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  cache:
+    image: redis
+    ports:
+      - '6379:6379'
+    command: redis-server
+    volumes: 
+      - cache:/volumes/data/redis
+volumes:
+  cache:
+    driver: local
