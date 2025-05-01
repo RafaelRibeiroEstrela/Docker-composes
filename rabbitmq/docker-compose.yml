@@ -1,17 +1,21 @@
-version: "3.2"
+version: '3.8'
 services:
-  rabbitmq:
+  rabbitmq_service:
     image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
+    container_name: 'streaming-rabbitmq'
     ports:
         - 5672:5672
         - 15672:15672
     volumes:
-        - /volumes/rabbitmq/data/:/var/lib/rabbitmq/
-        - /volumes/rabbitmq/log/:/var/log/rabbitmq
+        - store:/data/:/var/lib/rabbitmq/
+        - store:/log/:/var/log/rabbitmq
     networks:
-        - rabbitmq_go_net
+        - rede1
 
 networks:
-  rabbitmq_go_net:
+  rede1:
     driver: bridge
+
+volumes:
+  store:
+    driver: local    

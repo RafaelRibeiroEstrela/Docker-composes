@@ -1,4 +1,0 @@
-Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error mounting "/home/user/Documents/docker-compose/elasticsearch/elk-config/elasticsearch/elasticsearch.yml" to rootfs at "/usr/share/elasticsearch/config/elasticsearch.yml": mount /home/user/Documents/docker-compose/elasticsearch/elk-config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml (via /proc/self/fd/6), flags: 0x5000: not a directory: unknown: Are you trying to mount a directory onto a file (or vice-versa)? Check if the specified host path exists and is the expected type
-
- *  The terminal process "/usr/bin/bash '-c', 'docker compose -f "elasticsearch/docker-compose.yml" up -d --build'" terminated with exit code: 1. 
- *  Terminal will be reused by tasks, press any key to close it. 
