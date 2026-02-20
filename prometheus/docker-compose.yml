@@ -1,0 +1,22 @@
+
+services:
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: container-prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - "--config.file=storeprometheus-config.yml"
+    volumes:
+      - store:/data
+    networks:
+      - rede1
+
+networks:
+  rede1:
+    external: true
+
+volumes:
+  store:
+    driver: local

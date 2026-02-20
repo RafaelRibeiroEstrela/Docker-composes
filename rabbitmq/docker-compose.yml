@@ -14,7 +14,7 @@ services:
 
 networks:
   rede1:
-    driver: bridge
+    external: true
 
 volumes:
   store:
