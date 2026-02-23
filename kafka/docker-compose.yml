@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  zookeeper_service:
-    container_name: server-zookeeper
+  kafka-zookeeper:
+    container_name: kafka-zookeeper-container
     image: confluentinc/cp-zookeeper:latest
     networks: 
       - rede1
@@ -10,13 +10,13 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  kafka_service:
-    container_name: streaming-kafka
+  kafka:
+    container_name: kafka-container
     image: confluentinc/cp-kafka:latest
     networks: 
       - rede1
     depends_on:
-      - zookeeper_service
+      - kafka-zookeeper
     ports:
       - 9092:9092
     environment:
@@ -27,17 +27,17 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  kafdrop_service:
-    container_name: gui-kafka
+  kafdrop:
+    container_name: kafdrop-container
     image: obsidiandynamics/kafdrop:latest
     ports:
       - 19000:9000
     depends_on:
-      - kafka_service 
+      - kafka 
     networks: 
       - rede1
     environment:
-      KAFKA_BROKERCONNECT: streaming-kafka:29092
+      KAFKA_BROKERCONNECT: kafka:29092
 
 networks: 
   rede1:
