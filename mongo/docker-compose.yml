@@ -1,20 +1,85 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  mongodb:
-    container_name: mongodb-container
-    image: mongo
+  mongo1:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo1
+    hostname: mongo1
+    restart: unless-stopped
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --keyFile
+      - /data/configdb/keyfile
     ports:
       - "27017:27017"
     volumes:
-      - store:/data
+      - mongo1_data:/data/db
+      - ./keyfile:/data/configdb/keyfile:ro
     networks:
-      - rede1
+      - mongo-net
 
-networks:
-  rede1:
-    external: true
+  mongo2:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo2
+    hostname: mongo2
+    restart: unless-stopped
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --keyFile
+      - /data/configdb/keyfile
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo2_data:/data/db
+      - ./keyfile:/data/configdb/keyfile:ro
+    networks:
+      - mongo-net
+
+  mongo3:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo3
+    hostname: mongo3
+    restart: unless-stopped
+    command:
+      - mongod
+      - --replSet
+      - rs0
+      - --bind_ip_all
+      - --keyFile
+      - /data/configdb/keyfile
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo3_data:/data/db
+      - ./keyfile:/data/configdb/keyfile:ro
+    networks:
+      - mongo-net
+
+  mongo-setup:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo-setup
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    restart: "no"
+    entrypoint: ["/bin/bash", "/scripts/setup-rs.sh"]
+    volumes:
+      - ./scripts/setup-rs.sh:/scripts/setup-rs.sh:ro
+    networks:
+      - mongo-net
 
 volumes:
-  store:
-    driver: local     
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+
+networks:
+  mongo-net:
+    driver: bridge
